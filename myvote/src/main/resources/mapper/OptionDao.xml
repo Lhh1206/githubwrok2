@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lhh.dao.OptionDao">
+    <select id="subjectbuyid" resultType="Subject">
+        SELECT s.vs_id,s.vs_title,s.vs_type,COUNT(DISTINCT o.vo_id) vo_idd,COUNT(DISTINCT i.vi_id) vi_idd
+        FROM vote_subject s
+                 LEFT JOIN vote_option o ON s.vs_id = o.vs_id
+                 LEFT JOIN vote_item i ON s.vs_id = i.vs_id
+        where s.vs_id = #{id}
+    </select>
+    <select id="optionlist" resultType="Option" >
+        select * from vote_option where vs_id =#{id}
+    </select>
+
+    <select id="toupiaos" resultType="int" >
+        select count(1) from vote_item where vs_id=#{vsid} and vo_id=#{vpid}
+    </select>
+
+    <select id="count" resultType="int" >
+        select count(1) from  vote_item where vu_user_id =#{userid} and vs_id=#{vsid}
+    </select>
+
+</mapper>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lhh.dao.ItemDao">
+    <insert id="toupiao" parameterType="Item" >
+        insert into vote_item(vu_user_id,vs_id,vo_id)values(#{vu_user_id},#{vs_id},#{vo_id})
+    </insert>
+</mapper>

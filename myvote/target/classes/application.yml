@@ -1,0 +1,47 @@
+server:
+  port: 6060
+  servlet:
+    context-path: /myvote
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/myvote?serverTimezone=GMT
+    username: root
+    password: 123
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT-8
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/templates/,classpath:/static/,classpath:/META-NF/resources/,classpath:/resources/,classpath:/public/,classpath:/upload
+  thymeleaf:
+    cache: false
+  redis:
+    database: 0
+    password: 123456
+    timeout: 10s
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 5
+        min-idle: -1
+    cluster:
+      nodes:
+        - 192.168.240.128:7000
+        - 192.168.240.128:7001
+        - 192.168.240.128:7002
+        - 192.168.240.128:7003
+        - 192.168.240.128:7004
+        - 192.168.240.128:7005
+mybatis:
+  type-aliases-package: com.lhh.pojo
+  mapper-locations: classpath:/mapper/*.xml
+  configuration:
+    use-generated-keys: true
+    auto-mapping-behavior: full
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+pagehelper:
+  reasonable: true
+  pageSizeZero: true

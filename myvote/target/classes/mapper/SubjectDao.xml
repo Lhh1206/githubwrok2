@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lhh.dao.SubjectDao">
+
+    <select id="list"  resultType="Subject">
+        SELECT s.vs_id,s.vs_title,s.vs_type,COUNT(DISTINCT o.vo_id) vo_idd,COUNT(DISTINCT i.vi_id) vi_idd
+        FROM vote_subject s
+                 LEFT JOIN vote_option o ON s.vs_id=o.vs_id
+                 LEFT JOIN vote_item i ON s.vs_id=i.vs_id
+        group by s.vs_id,s.vs_title
+    </select>
+
+    <insert id="xinzensubject">
+        insert into vote_subject(vs_title,vs_type) VALUES(#{title},#{type})
+    </insert>
+
+    <insert id="xinzenoption">
+        insert into vote_option(vs_id,vo_option,vo_order)values(#{vsid},#{optionname},#{order})
+    </insert>
+
+    <select id="maxid" resultType="int">
+        select MAX(vs_id) from vote_subject
+    </select>
+
+    <update id="updatetitlie" >
+        update vote_subject set vs_title=#{title},vs_type=#{type} where vs_id=#{vsid}
+    </update>
+    <delete id="deleteoption">
+        delete from vote_option where vs_id=#{vsid}
+    </delete>
+
+    <select id="subjectbuytj" resultType="Subject" parameterType="String">
+        SELECT s.vs_id,s.vs_title,s.vs_type,COUNT(DISTINCT o.vo_id) vo_idd,COUNT(DISTINCT i.vi_id) vi_idd
+        FROM vote_subject s
+                 LEFT JOIN vote_option o ON s.vs_id=o.vs_id
+                 LEFT JOIN vote_item i ON s.vs_id=i.vs_id
+        where vs_title like CONCAT('%',#{subjectname},'%')
+        group by s.vs_id,s.vs_title
+    </select>
+</mapper>

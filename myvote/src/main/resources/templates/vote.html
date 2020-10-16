@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html >
+<!--suppress ALL-->
+<HTML xmlns:th="http://www.thymeleaf.org">
+<HEAD>
+    <META content="IE=11.0000"
+          http-equiv="X-UA-Compatible">
+
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <TITLE>参与投票</TITLE>
+    <LINK href="css/style.css" rel="stylesheet" type="text/css">
+    <META name="GENERATOR" content="MSHTML 11.00.10586.420">
+    <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+    <script type="text/javascript">
+        function toupiao() {
+            var heid = $("#hed_id").val();
+            alert(heid);
+            if (heid == 1) {
+                var vsid = $("#vs_id").val();
+                var vpid = $('input[name="options"]:checked').val();
+                $.getJSON("toupiao.do?vpid=" + vpid + "&vsid=" + vsid + "", function (data) {
+                    if (data == true) {
+                        alert("投票成功");
+                        location.href = "subjectlist.do";
+                    } else {
+                        alert("投票失败");
+                        location.href = "subjectlist.do";
+                    }
+                });
+            } else {
+                alert("进来了");
+                var vsid = $("#vs_id").val();
+
+                var checkID = [];
+                $("input[name='options']:checked").each(function (i) {
+                    checkID[i] = $(this).val();
+                });
+
+                $.ajax(
+                    {
+                        data: {'checkID': checkID, 'vsid': vsid},
+                        dataType: 'text',
+                        success: function (data) {
+                            if (data == "true") {
+                                alert("投票成功");
+                                location.href = "subjectlist.do";
+                            } else {
+                                alert("投票失败");
+                                location.href = "subjectlist.do";
+                            }
+                        },
+                        type: 'post',
+                        url: 'ftoupiao.do',
+                        traditional: true  //防止深度序列化
+                    }
+                );
+            }
+        }
+
+        function tianjia() {
+            $.getJSON("add.do", function (data) {
+                if (data == true) {
+                    location.href = "add.html";
+                } else {
+                    alert("你的权限不够请联系管理员")
+                }
+            });
+        }
+    </script>
+
+</HEAD>
+<BODY>
+<DIV class="wrap" id="header"><IMG src="images/logo.gif"></DIV>
+<DIV class="wrap" id="navbar">
+    <DIV class="profile"><span th:text="${'你好:'+session.user.vu_user_name}"></span> <SPAN class="return"><A
+            href="subjectlist.do">返回列表</A></SPAN>
+        <SPAN class="addnew"><A href="#" id="tj_tp" onclick="tianjia()">添加新投票</A></SPAN>
+        <SPAN class="modify"><A href="http://localhost:8080/myVote/Subject-modify.action">维护</A></SPAN>
+        <SPAN class="return"><A
+                href="http://localhost:6060/myvote/exit.do">注销</A></SPAN></DIV>
+    <DIV class="search">
+        <FORM action="Subject-search.action" method="post"><INPUT name="keywords" class="input-text" type="text"><INPUT
+                name="submit" class="input-button" type="submit" value=""/>
+        </FORM>
+    </DIV>
+</DIV>
+<DIV class="wrap" id="vote">
+    <H2>参与投票</H2>
+    <UL class="list">
+        <LI>
+            <H4 th:text="${subjectbuyid.getVs_title()}">就业意向城市</H4>
+            <input type="hidden" id="vs_id" th:value="${subjectbuyid.getVs_id()}"/>
+            <P class="info" th:text="'共有'+${subjectbuyid.getVo_idd()}+'个选项，已有'+${subjectbuyid.getVi_idd()}+'个投票。'"></P>
+            <FORM action="Vote-voteSave.action" method="post"><INPUT name="entityId" type="hidden" value="1">
+                <INPUT name="struts.token.name" type="hidden" value="token">
+                <INPUT name="token" type="hidden" value="4UDEDKPAXYKC1PTLWA2OMZGQ925VSGDB">
+                <div th:if="${subjectbuyid.getVs_type()==1}">
+                    <input type="hidden" id="hed_id" th:value="${subjectbuyid.getVs_type()}">
+                    <UL th:each="option,index:${optionlist}">
+                        <LI><span th:text="${option.getVo_order()}+'.'"></span><INPUT name="options" type="radio"
+                                                                                      th:value="${option.getVo_id()}"
+                                                                                      th:text="${option.getVo_option()}">
+                        </LI>
+                    </UL>
+                </div>
+                <div th:if="${subjectbuyid.getVs_type()==2}">
+                    <input type="hidden" id="hed_id" th:value="${subjectbuyid.getVs_type()}">
+                    <UL th:each="option,index:${optionlist}">
+                        <LI><span th:text="${option.getVo_order()}+'.'"></span><INPUT name="options" type="checkbox"
+                                                                                      th:value="${option.getVo_id()}"
+                                                                                      th:text="${option.getVo_option()}">
+                        </LI>
+                    </UL>
+                </div>
+                <P class="voteView"><INPUT type="image" src="images/button_vote.gif" onclick="toupiao()"/><A
+                        href="#"><IMG src="images/button_view.gif"/></A></P></FORM>
+        </LI>
+    </UL>
+</DIV>
+<DIV class="wrap" id="footer"> 北大青鸟 © 版权所有</DIV>
+</BODY>
+</HTML>

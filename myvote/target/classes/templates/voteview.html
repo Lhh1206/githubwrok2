@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<!--suppress ALL-->
+<HTML xmlns:th="http://www.thymeleaf.org">
+<HEAD>
+    <META content="IE=11.0000"
+          http-equiv="X-UA-Compatible">
+
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <TITLE>投票详情</TITLE>
+    <LINK href="css/style.css" rel="stylesheet" type="text/css">
+    <META name="GENERATOR" content="MSHTML 11.00.10586.420">
+    <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+    <script type="text/javascript">
+        function tianjia() {
+
+            $.getJSON("add.do", function (data) {
+                if (data == true) {
+                    location.href = "add.html";
+                } else {
+                    alert("你的权限不够请联系管理员")
+                }
+            });
+        }
+
+    </script>
+
+</HEAD>
+<BODY>
+<DIV class="wrap" id="header"><IMG src="images/logo.gif"></DIV>
+<DIV class="wrap" id="navbar">
+    <DIV class="profile"><span th:text="${'你好: '+session.user.vu_user_name}"></span> <SPAN class="return"><A
+            href="subjectlist.do">返回列表</A></SPAN>
+        <SPAN class="addnew"><A href="#" onclick="tianjia()">添加新投票</A></SPAN>
+        <SPAN class="modify"><A href="http://localhost:8080/myVote/Subject-modify.action">维护</A></SPAN>
+        <SPAN class="return"><A
+                href="http://localhost:6060/myvote/exit.do">注销</A></SPAN></DIV>
+    <DIV class="search">
+        <FORM action="Subject-search.action" method="post"><INPUT name="keywords" class="input-text" type="text"><INPUT
+                name="submit" class="input-button" type="submit" value=""/>
+        </FORM>
+    </DIV>
+</DIV>
+<DIV class="wrap" id="vote">
+    <H2>查看投票</H2>
+    <UL class="list">
+        <LI>
+            <H4 th:text="${subjectbuyid.getVs_title()}">哪个浏览器好用</H4>
+            <P class="info" th:text="'共有'+${subjectbuyid.getVo_idd()}+'个选项，已有'+${subjectbuyid.getVi_idd()}+'个投票。'">共有 4
+                个选项，已有 15 个投票。</P>
+            <OL th:each="option,index:${optionlist}">
+                <LI><span th:text="${option.getVo_option()}+':'"></span>
+                   <!-- option.getPiaoshu()-->
+                    <div th:if="${subjectbuyid.getVi_idd()} eq 0">
+                        <DIV class="rate">
+                            <DIV class="ratebg">
+                                <DIV class="percent"
+                                     th:style="'width:0.0%'"></DIV>
+                            </DIV>
+                            <P><span th:text="'0票'"></span><SPAN
+                                    th:text="'0.0%'">(40.0%)</SPAN>
+                            </P></DIV>
+                    </div>
+                 <div th:if="${subjectbuyid.getVi_idd()} ne 0">
+                    <DIV class="rate">
+                        <DIV class="ratebg">
+                            <DIV class="percent"
+                                 th:style="'width:'+${option.getPiaoshu()}/${subjectbuyid.getVi_idd()}*100+'%'"></DIV>
+                        </DIV>
+                        <P><span th:text="${option.getPiaoshu()}+'票'"></span><SPAN
+                                th:text="'('+${option.getPiaoshu()}/${subjectbuyid.getVi_idd()}*100+'%)'">(40.0%)</SPAN>
+                        </P></DIV>
+                   </div>
+                </LI>
+            </OL>
+            <DIV class="goback"><A href="subjectlist.do">返回投票列表</A></DIV>
+        </LI>
+    </UL>
+</DIV>
+<DIV class="wrap" id="footer"> 北大青鸟 © 版权所有</DIV>
+</BODY>
+</HTML>

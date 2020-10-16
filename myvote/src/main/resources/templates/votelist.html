@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<!--suppress ALL -->
+<HTML xmlns:th="http://www.thymeleaf.org">
+<HEAD>
+    <META content="IE=11.0000"
+          http-equiv="X-UA-Compatible">
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <TITLE>投票列表</TITLE>
+    <LINK href="css/style.css" rel="stylesheet" type="text/css">
+    <META name="GENERATOR" content="MSHTML 11.00.10586.420">
+    <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+    <script type="text/javascript">
+        function fenye(id) {
+            location.href = "subjectlist.do?index=" + id + "";
+        }
+
+        function tianjia() {
+            $.getJSON("add.do", function (data) {
+                if (data == true) {
+                    location.href = "add.html";
+                } else {
+                    alert("你的权限不够请联系管理员");
+                }
+            });
+        }
+
+        function weihu() {
+            $.getJSON("weihu.do", function (data) {
+                if (data == false) {
+                    alert("你的权限不够请联系管理员");
+                }
+            });
+        }
+
+    </script>
+</HEAD>
+<BODY>
+<DIV class="wrap" id="header"><IMG src="images/logo.gif"></DIV>
+<DIV class="wrap" id="navbar">
+    <DIV class="profile"><span th:text="${'你好: '+session.user.vu_user_name}"></span> <SPAN class="return"><A
+            href="subjectlist.do">返回列表</A></SPAN>
+        <SPAN class="addnew"><A href="#" onclick="tianjia()">添加新投票</A></SPAN>
+        <SPAN class="modify"><A href="#" onclick="weihu()">维护</A></SPAN>
+        <SPAN class="return"><A
+                href="http://localhost:6060/myvote/exit.do">注销</A></SPAN></DIV>
+    <DIV class="search">
+        <FORM action="subjectbuytj.do" method="post"><INPUT name="subjectname" class="input-text" type="text" required="required"><INPUT
+                name="submit" class="input-button" type="submit" value=""/>
+        </FORM>
+    </DIV>
+</DIV>
+<DIV class="wrap" id="vote">
+    <H2>投票列表</H2>
+    <DIV style="float: right;">
+        <A href="#" th:onclick="'fenye(1)'">首页</A>
+        | <A href="#" th:onclick="'fenye('+${pageindex - 1}+')'">上一页</A>
+        | <A href="#" th:onclick="'fenye('+${pageindex + 1}+')'">下一页</A>
+        | <A href="#" th:onclick="'fenye('+${pagetolo}+')'">末页</A>
+    </DIV>
+    <BR>
+    <UL class="list" th:each="page,index:${pageinfo.list}">
+        <LI class="odd">
+            <H4><A href="#" th:href="@{'optionbuyview.do?index='+${page.vs_id}}" th:text="${page.vs_title}">哪个浏览器好用</A>
+            </H4>
+            <DIV class="join"><A href="#" th:href="@{'optionbuylist.do?index='+${page.vs_id}}">我要参与</A></DIV>
+            <P class="info" th:text="'共有'+${page.vo_idd}+'个选项，已有 '+${page.vi_idd}+' 个投票'">共有 4 个选项，已有 15 个投票。</P></LI>
+    </UL>
+    <DIV style="float: right;">
+        <A href="#" th:onclick="'fenye(1)'">首页</A>
+        | <A href="#" th:onclick="'fenye('+${pageindex - 1}+')'">上一页</A>
+        | <A href="#" th:onclick="'fenye('+${pageindex + 1}+')'">下一页</A>
+        | <A href="#" th:onclick="'fenye('+${pagetolo}+')'">末页</A>
+    </DIV>
+</DIV>
+
+<DIV class="wrap" id="footer"> 北大青鸟 © 版权所有</DIV>
+</BODY>
+</HTML>

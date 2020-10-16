@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lhh.dao.UserDao">
+    <select id="user" resultType="user">
+        select*  from vote_user where vu_user_name =#{name} and vu_password=#{pwd}
+    </select>
+   <insert id="zhuce" parameterType="User">
+       insert into vote_user(vu_user_name,vu_password,vu_status)
+       VALUES(#{vu_user_name},#{vu_password},#{vu_status})
+   </insert>
+    <select id="verify" resultType="int" parameterType="String">
+        select count(1) from vote_user where vu_user_name=#{name}
+    </select>
+</mapper>

@@ -1,0 +1,87 @@
+<!DOCTYPE html >
+<!--suppress ALL-->
+<HTML xmlns:th="http://www.thymeleaf.org">
+<HEAD>
+    <META content="IE=11.0000"
+          http-equiv="X-UA-Compatible">
+
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <TITLE>发布新投票</TITLE>
+    <LINK href="css/style.css" rel="stylesheet" type="text/css">
+
+    <SCRIPT type="text/javascript">
+    </SCRIPT>
+    <META name="GENERATOR" content="MSHTML 11.00.10586.420">
+    <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+    <script type="text/javascript">
+        //新增投票选项
+        function AddOption() {
+            var add = "<P><INPUT name='options' class='input-text' type='text' required='required'>  <a href='#' onclick='del(this)'>删除</a></P>";
+            $("#voteoptions").append(add);
+        }
+        //删除投票选项
+        function del(d){
+            $(d).parents("p").remove();
+        }
+        //新增投票
+        function xinzen(){
+            alert("123");
+            document.getElementById("sub_id").submit();
+        }
+    </script>
+
+
+</HEAD>
+<BODY>
+<DIV class="wrap" id="header"><IMG src="images/logo.gif"></DIV>
+<DIV class="wrap" id="navbar">
+    <DIV class="profile"><span th:text="${'你好: '+session.user.vu_user_name}"></span> <SPAN class="return"><A
+            href="subjectlist.do">返回列表</A></SPAN>
+        <SPAN class="addnew"><A href="http://localhost:8080/myVote/Subject-add.action">添加新投票</A></SPAN>
+        <SPAN class="modify"><A href="http://localhost:8080/myVote/Subject-modify.action">维护</A></SPAN>
+        <SPAN class="return"><A
+                href="http://localhost:6060/myvote/exit.do">注销</A></SPAN></DIV>
+    <DIV class="search">
+        <FORM action="Subject-search.action" method="post"><INPUT name="keywords" class="input-text" type="text"><INPUT
+                name="submit" class="input-button" type="submit" value=""/>
+        </FORM>
+    </DIV>
+</DIV>
+<DIV class="box" id="voteManage">
+    <H2>维户投票</H2>
+    <DIV class="content">
+        <FORM id="sub_id"  th:action="'update.do?vsid='+${subjectbuyid.getVs_id()}"  method="post">
+            <DL>
+                <DT>投票内容：</DT>
+                <DD> <INPUT name="token" type="hidden" value="B1XPKLEQ7DQ6DNVWKBARPOY4HLYYXDE6">
+                    <INPUT name="subjecttitle" th:value="${subjectbuyid.getVs_title()}" class="input-text" id="title" type="text" required="required">
+                </DD>
+                <DT>投票类型：</DT>
+
+                <div th:if="${subjectbuyid.getVs_type() } eq 1 ">
+                    <DD><INPUT name="subjecttype" type="radio" value="1" checked="checked">单选 <INPUT name="subjecttype" type="radio" value="2">多选
+                    </DD>
+                </div>
+                <div th:if="${subjectbuyid.getVs_type() } eq 2 ">
+                    <DD><INPUT name="subjecttype" type="radio" value="1" >单选 <INPUT name="subjecttype" type="radio" value="2" checked="checked">多选
+                    </DD>
+                </div>
+                <DT >投票选项：</DT>
+                <DD  id="voteoptions" >
+                    <div th:each="option,index:${optionlist}">
+                        <P><INPUT name="options" th:value="${option.getVo_option()}" class="input-text" type="text" required="required"> <a href="#" onclick="del(this)">删除</a></P>
+                    </div>
+                </DD>
+
+                <DT></DT>
+                <DD class="button"><INPUT type="image" src="images/button_submit.gif" onclick="xinzen()">
+                    <A onclick="AddOption()" href="#">增加选项</A> <A
+                            href="http://localhost:8080/myVote/Subject-list.action">取消操作</A>
+                </DD>
+            </DL>
+        </FORM>
+    </DIV>
+</DIV>
+<DIV class="wrap" id="footer"> 北大青鸟 © 版权所有</DIV>
+</BODY>
+</HTML>
