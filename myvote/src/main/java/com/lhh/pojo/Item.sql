@@ -1,0 +1,9 @@
+-- auto Generated on 2020-10-16
+-- DROP TABLE IF EXISTS item;
+CREATE TABLE item(
+	vi_id INT (11) UNIQUE AUTO_INCREMENT COMMENT '自己id',
+	vu_user_id INT (11) NOT NULL DEFAULT -1 COMMENT '用户id',
+	vs_id INT (11) NOT NULL DEFAULT -1 COMMENT '主题id',
+	vo_id INT (11) NOT NULL DEFAULT -1 COMMENT '选项id',
+	PRIMARY KEY (vi_id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT 'item';
